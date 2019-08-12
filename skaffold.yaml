@@ -1,0 +1,26 @@
+apiVersion: skaffold/v1beta13
+kind: Config
+metadata:
+  name: little-chat
+build:
+  tagPolicy: {}
+  artifacts:
+  - image: local/frontend
+    context: .
+    docker:
+      dockerfile: ./frontend/Dockerfile
+  - image: local/backend
+    context: .
+    docker:
+      dockerfile: ./backend/Dockerfile
+  local:
+    push: false
+# deploy:
+#   helm:
+#     releases:
+#     - name: little-chat
+#       chartPath: ./helm/little-chat
+#       valuesFiles: [./helm/little-chat/values.yaml]
+#       values:
+#         "web.image": local/web
+#         "helloworld.image": local/helloworld

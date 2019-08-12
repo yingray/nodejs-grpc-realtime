@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package chatroom;
+
+service ChatRoom {
+  rpc GetChats (GetChatsRequest) returns (GetChatsResponse) {}
+  rpc InsertChat (InsertChatRequest) returns (InsertChatResponse) {}
+  rpc ListenChats (ListenChatsRequest) returns (stream Message) {}
+}
+
+message Message {
+  string email = 1;
+  string text = 2;
+  string time = 3;
+}
+
+message GetChatsRequest {
+}
+
+message GetChatsResponse {
+  repeated Message messages = 1;
+}
+
+message InsertChatRequest {
+  Message message = 1;
+}
+
+message InsertChatResponse {
+}
+
+message ListenChatsRequest {
+}
