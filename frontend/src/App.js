@@ -11,23 +11,27 @@ function App() {
 
   useEffect(() => {
     const client = new ChatRoomClient("http://localhost:8080");
-    const getChatsReq = new GetChatsRequest();
-    client.getChats(getChatsReq, {}, (err, res) => {
-      setMessages(res.toObject().messagesList);
+    client.getChats(new GetChatsRequest(), {}, (err, res) => {
+      if (err) {
+        return console.log(err);
+      } else if (res && res.toObject) {
+        return setMessages(res.toObject().messagesList);
+      }
     });
-
-    // const req = new ListenChatsRequest();
-    // const stream = client.listenChats(req);
-    // stream.on("data", response => {
-    //   const data = response.toObject();
-    //   setMessages([...messages, data]);
-    // 
-  });
+    const req = new ListenChatsRequest();
+    const stream = client.listenChats(req);
+    stream.on("data", response => {
+      const data = response.toObject();
+      console.log(data);
+      console.log(messages);
+      return setMessages(m => [...m, data]);
+    });
+  }, []);
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        {/* <img src={logo} className="App-logo" alt="logo" /> */}
         <Chatbox />
         <table>
           <tr>

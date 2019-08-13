@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+    tier: frontend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5000
+      targetPort: http
+      protocol: TCP
+      name: http-web
+  selector:
+    app: {{ .Chart.Name }}
+    tier: frontend

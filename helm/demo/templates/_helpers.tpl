@@ -1,45 +1,29 @@
-{{/* vim: set filetype=mustache: */}}
-{{/*
-Expand the name of the chart.
-*/}}
-{{- define "demo.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
-*/}}
-{{- define "demo.fullname" -}}
-{{- if .Values.fullnameOverride -}}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- $name := default .Chart.Name .Values.nameOverride -}}
-{{- if contains $name .Release.Name -}}
-{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Create chart name and version as used by the chart label.
-*/}}
-{{- define "demo.chart" -}}
-{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-
-{{/*
-Common labels
-*/}}
-{{- define "demo.labels" -}}
-app.kubernetes.io/name: {{ include "demo.name" . }}
-helm.sh/chart: {{ include "demo.chart" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- define "virtualService.corsPolicy" -}}
+allowOrigin:
+  - "*"
+allowMethods:
+  - POST
+  - GET
+  - OPTIONS
+  - PUT
+  - DELETE
+allowHeaders:
+  - grpc-timeout
+  - content-type
+  - keep-alive
+  - user-agent
+  - cache-control
+  - content-type
+  - content-transfer-encoding
+  - custom-header-1
+  - x-accept-content-transfer-encoding
+  - x-accept-response-streaming
+  - x-user-agent
+  - x-grpc-web
+maxAge: 1728s
+exposeHeaders:
+  - custom-header-1
+  - grpc-status
+  - grpc-message
+allowCredentials: true
 {{- end -}}

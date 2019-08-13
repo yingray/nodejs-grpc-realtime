@@ -22,7 +22,7 @@ const Chatbox = () => {
     req.setMessage(message);
     client.insertChat(req, {}, e => {
       if (e) {
-        alert(e);
+        console.error(e);
       }
     });
   };

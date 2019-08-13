@@ -45,7 +45,8 @@ function GetChats(call, callback) {
 }
 
 MessageCol.watch().on("change", change => {
-  notifyChat(change);
+  console.log(change.operationType);
+  notifyChat(change.fullDocument);
 });
 
 function ListenChats(call, callback) {
@@ -54,6 +55,7 @@ function ListenChats(call, callback) {
 
 const notifyChat = message => {
   console.log("users: ", users.length);
+  console.log(message);
   users.forEach(user => {
     user.write(message);
   });

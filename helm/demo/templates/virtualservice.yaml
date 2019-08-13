@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - {{ .Chart.Name }}
+  http:
+  - match:
+    - uri:
+        prefix: /pb
+    route:
+    - destination:
+        host: backend
+        port:
+          number: {{ .Values.backend.service.port }}
+    corsPolicy: 
+{{ include "virtualService.corsPolicy" . | indent 6 }}
+  - route:
+    - destination:
+        host: web
